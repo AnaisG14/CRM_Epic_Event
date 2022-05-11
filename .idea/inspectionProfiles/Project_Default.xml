@@ -1,0 +1,39 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="5">
+            <item index="0" class="java.lang.String" itemvalue="djangorestframework-simplejwt" />
+            <item index="1" class="java.lang.String" itemvalue="Django" />
+            <item index="2" class="java.lang.String" itemvalue="requests" />
+            <item index="3" class="java.lang.String" itemvalue="djangorestframework" />
+            <item index="4" class="java.lang.String" itemvalue="pytz" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="Category.objects" />
+          <option value="Product.objects" />
+          <option value="shop.models.Category.objects" />
+          <option value="shop.models.Product.objects" />
+          <option value="title" />
+          <option value="description" />
+          <option value="type" />
+          <option value="tag" />
+          <option value="priority" />
+          <option value="status" />
+          <option value="created_date_time" />
+          <option value="issue_tracking.models.Project.objects" />
+          <option value="issue_tracking.models.Issue.objects" />
+          <option value="issue_tracking.models.Comment.objects" />
+          <option value="issue_tracking.models.Contributors.objects" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
