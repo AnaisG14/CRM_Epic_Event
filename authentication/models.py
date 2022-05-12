@@ -12,7 +12,10 @@ class User(AbstractUser):
         (SUPPORT, 'Support team'),
         (MANAGER, 'Management team'),
     )
-    role = models.CharField(max_length=30, choices=ROLE_CHOICES)
+
+    role = models.CharField(max_length=30, choices=ROLE_CHOICES, blank=False, null=False)
 
     def __str__(self):
         return f"{self.username} {self.role}"
+
+

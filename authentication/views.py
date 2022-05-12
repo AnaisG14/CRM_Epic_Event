@@ -1,3 +1,29 @@
 from django.shortcuts import render
+from django.contrib.auth import authenticate, login
+from django.views.generic import View
+from .forms import LoginForm
 
-# Create your views here.
+
+class LoginPage(View):
+    template_name = 'authentication/login_page.html'
+    form_class = LoginForm
+
+    def get(self, request):
+        form = self.form_class()
+        message = ''
+        return render(request, self.template_name, context={'form': form, 'message': message})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            user = authenticate(
+                username=form.cleaned_data['username'],
+                password=form.cleaned_data['password'],
+            )
+            if user:
+                login(request, user)
+                # return redirect('home')
+                message = f'Hello {user.username}, you are connected.'
+            else:
+                message = 'Connexion failed. Please verify your username and password or contact your administrator.'
+        return render(request, self.template_name, context={'form': form, 'message': message})
