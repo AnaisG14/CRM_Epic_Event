@@ -6,6 +6,8 @@ class TestModelUser:
 
     @classmethod
     def setup(cls):
+        cls.user_test = {'username': 'user_test',
+                         'role': 'Sailor team'}
         cls.user_test1 = User.objects.create_user(username="user_test1",
                                                   role='Sailor team'
                                                   )
@@ -18,7 +20,8 @@ class TestModelUser:
 
     @pytest.mark.django_db
     def test_user_count(self):
-        assert User.objects.count() == 3
+        user = User.objects.create_user(**self.user_test)
+        assert User.objects.count() == 4
 
     @pytest.mark.django_db
     def test_user_has_role(self):
