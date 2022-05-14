@@ -29,7 +29,8 @@ class TestModelClients:
                                          attendees=50,
                                          event_date="2022-07-18 19:00:00",
                                          notes="birthday",
-                                         contract=cls.contract
+                                         contract=cls.contract,
+                                         client=cls.client,
                                          )
 
     @pytest.mark.django_db

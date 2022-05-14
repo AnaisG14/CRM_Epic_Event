@@ -15,11 +15,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework import routers
 
 from authentication import views
+from clients.views import ClientAPIViewSet, ContractAPIViewSet, EventAPIViewSet
+
+router = routers.SimpleRouter()
+router.register('client', ClientAPIViewSet, basename='client')
+router.register('contract', ContractAPIViewSet, basename='contract')
+router.register('event', EventAPIViewSet, basename='event')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.LoginPage.as_view(), name='login'),
     path('api-auth/', include('rest_framework.urls')),
+    path('api/', include(router.urls)),
 ]
