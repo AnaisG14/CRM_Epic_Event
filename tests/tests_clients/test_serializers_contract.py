@@ -3,10 +3,10 @@ import copy
 from datetime import datetime
 from authentication.models import User
 from clients.models import Client, Contract, Event
-from clients.serializers import ContractSerializer
+from clients.serializers import ContractDetailSerializer
 
 
-class TestContractSerializer:
+class TestContractDetailSerializer:
 
     @classmethod
     def setup(cls):
@@ -34,7 +34,7 @@ class TestContractSerializer:
                                          client=cls.client,
                                          )
 
-        cls.serializer = ContractSerializer
+        cls.serializer = ContractDetailSerializer
         payment_due = datetime.now()
         cls.valid_data = {'sales_contact': cls.sailor.id,
                           'client': cls.client.id,

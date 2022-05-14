@@ -3,7 +3,7 @@ import copy
 from datetime import datetime
 from authentication.models import User
 from clients.models import Client, Contract, Event
-from clients.serializers import EventSerializer, ContractSerializer
+from clients.serializers import EventDetailSerializer
 
 
 class TestEventSerializer:
@@ -26,7 +26,7 @@ class TestEventSerializer:
                                                amount=100.00,
                                                payment_due=datetime.now())
 
-        cls.serializer = EventSerializer
+        cls.serializer = EventDetailSerializer
         event_date = datetime.now()
 
         cls.valid_data = {'contract': cls.contract.pk,

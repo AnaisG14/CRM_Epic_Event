@@ -1,6 +1,6 @@
 import datetime
 
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 import pytest
 from django import test
 from clients.models import Client, Contract, Event
@@ -11,7 +11,6 @@ class TestClientEndpoint:
 
     @classmethod
     def setup(cls):
-        cls.url = reverse_lazy('client-list')
         cls.sailor = User.objects.create_user(username='Sailor1',
                                               role='Sailor team')
         cls.supporter = User.objects.create_user(username='Supporter1',
@@ -42,23 +41,42 @@ class TestClientEndpoint:
         return value.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
 
     @pytest.mark.django_db
-    def test_display_list_of_clients(self):
+    def test_display_list_of_client(self):
         client_test = test.Client()
-        response = client_test.get(self.url)
+        url = reverse_lazy('client-list')
+        response = client_test.get(url)
+        assert response.status_code == 200
+
+        expected = {
+            'count': 1,
+            'next': None,
+            'previous': None,
+            'results': [
+                {
+                    'id': self.client.id,
+                    'last_name': self.client.last_name,
+                    'email': self.client.email,
+                    'mobile': self.client.mobile,
+                    'company_name': self.client.company_name,
+                    'sales_contact': self.sailor.pk,
+                }]
+        }
+        assert response.json() == expected
+
+    @pytest.mark.django_db
+    def test_display_detail_of_clients(self):
+        client_test = test.Client()
+        url_detail = reverse('client-detail', kwargs={'pk': self.client.pk})
+        response = client_test.get(url_detail)
         assert response.status_code == 200
 
         contract = {
             'pk': self.contract.pk,
             'sales_contact': self.sailor.pk,
             'client': self.client.pk,
-            'date_created': self.format_datetime(self.contract.date_created),
-            'date_updated': self.format_datetime(self.contract.date_updated),
-            'status': True,
-            'amount': '100.00',
-            'payment_due': self.format_datetime(self.contract.payment_due),
             'event': self.event.pk
         }
-        expected = [{
+        expected = {
             'id': self.client.id,
             'first_name': self.client.first_name,
             'last_name': self.client.last_name,
@@ -70,8 +88,8 @@ class TestClientEndpoint:
             'date_updated': self.format_datetime(self.client.date_updated),
             'sales_contact': self.sailor.pk,
             'contracts_client': [contract]
-        }]
-
+        }
+        print(response)
         assert response.json() == expected
 
 #     def test_create(self):

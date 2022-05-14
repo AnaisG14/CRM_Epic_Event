@@ -3,10 +3,10 @@ import copy
 import datetime
 from authentication.models import User
 from clients.models import Client, Contract, Event
-from clients.serializers import ClientSerializer
+from clients.serializers import ClientDetailSerializer
 
 
-class TestClientSerializer:
+class TestClientDetailSerializer:
 
     @classmethod
     def setup(cls):
@@ -35,7 +35,7 @@ class TestClientSerializer:
                                          client=cls.client,
                                          )
 
-        cls.serializer = ClientSerializer
+        cls.serializer = ClientDetailSerializer
         
         contracts_client = {
             'pk': cls.contract.pk,

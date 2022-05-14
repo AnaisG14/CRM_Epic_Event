@@ -1,8 +1,20 @@
 from rest_framework.serializers import ModelSerializer
-from .models import Client,Contract, Event
+from .models import Client, Contract, Event
 
 
-class EventSerializer(ModelSerializer):
+class EventListSerializer(ModelSerializer):
+
+    class Meta:
+        model = Event
+        fields = [
+            'contract',
+            'client',
+            'support_contact',
+            'event_date'
+        ]
+
+
+class EventDetailSerializer(ModelSerializer):
 
     class Meta:
         model = Event
@@ -19,7 +31,19 @@ class EventSerializer(ModelSerializer):
         ]
 
 
-class ContractSerializer(ModelSerializer):
+class ContractListSerializer(ModelSerializer):
+
+    class Meta:
+        model = Contract
+        fields = [
+            'pk',
+            'sales_contact',
+            'client',
+            'event'
+        ]
+
+
+class ContractDetailSerializer(ModelSerializer):
 
     class Meta:
         model = Contract
@@ -36,9 +60,23 @@ class ContractSerializer(ModelSerializer):
         ]
 
 
-class ClientSerializer(ModelSerializer):
+class ClientListSerializer(ModelSerializer):
 
-    contracts_client = ContractSerializer(many=True)
+    class Meta:
+        model = Client
+        fields = [
+            'id',
+            'last_name',
+            'email',
+            'mobile',
+            'company_name',
+            'sales_contact',
+        ]
+
+
+class ClientDetailSerializer(ModelSerializer):
+
+    contracts_client = ContractListSerializer(many=True)
 
     class Meta:
         model = Client
