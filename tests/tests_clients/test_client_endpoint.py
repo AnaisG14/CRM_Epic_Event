@@ -87,7 +87,7 @@ class TestClientEndpoint:
             'date_created': self.format_datetime(self.client.date_created),
             'date_updated': self.format_datetime(self.client.date_updated),
             'sales_contact': self.sailor.pk,
-            'contracts_client': [contract]
+            'contracts_client': [contract],
         }
         print(response)
         assert response.json() == expected
