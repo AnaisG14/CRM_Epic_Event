@@ -43,6 +43,7 @@ class TestContractEndpoint:
     @pytest.mark.django_db
     def test_display_list_of_contract(self):
         client_test = test.Client()
+        client_test.force_login(self.sailor)
         url = reverse_lazy('contract-list')
         response = client_test.get(url)
         assert response.status_code == 200
@@ -64,6 +65,7 @@ class TestContractEndpoint:
     @pytest.mark.django_db
     def test_display_detail_of_contract(self):
         client_test = test.Client()
+        client_test.force_login(self.sailor)
         url_detail = reverse('contract-detail', kwargs={'pk': self.contract.pk})
         response = client_test.get(url_detail)
         assert response.status_code == 200

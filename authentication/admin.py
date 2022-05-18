@@ -1,8 +1,11 @@
 from django.contrib import admin
-from . models import User
+from .forms import UserForm
+from .models import User
 
 
 class UserAdmin(admin.ModelAdmin):
+    form = UserForm
+
     list_filter = ('role', 'username')
 
 
