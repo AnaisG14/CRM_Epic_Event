@@ -1,10 +1,11 @@
 from rest_framework.permissions import BasePermission, SAFE_METHODS
 
 
-class IsAuthorizedToAccessClient(BasePermission):
-    """ Sailors can display all clients but only delete or update theirs.
-        Sailors can create client.
-        Supporter can only see clients assigned to them and can't create clients."""
+class IsAuthorizedToAccessClientOrContract(BasePermission):
+    """ Sailors can display all clients or contracts but only delete or update theirs.
+        Sailors can create client and contract.
+        Supporter can only see clients or contacts assigned to them and
+        they can't create/update clients or contracts."""
 
     message = 'You are not authorized to access these datas.'
 
@@ -21,15 +22,22 @@ class IsAuthorizedToAccessClient(BasePermission):
             return bool(obj.sales_contact == request.user)
 
 
-class IsSupporterAssignedClientOrNoAccess(BasePermission):
-    """ Supporters can display only their assigned client.
-    They can't create, update or delete client."""
-    pass
+class IsAuthorizedSailorOrAssignedSupporterToManageEvents(BasePermission):
+    """
+    Sailors can display all events but only delete or update theirs.
+    Sailors can create events.
+    Supporter can only see and update events assigned to them.
+    They can't create/delete events.
+    """
 
+    def has_permission(self, request, view):
+        if request.method == 'GET' or request.method == 'PUT':
+            return bool(request.user.role == 'SAILOR' or request.user.role == 'SUPPORT')
+        else:
+            return bool(request.user.role == 'SAILOR')
 
-class CanCRUDClients(BasePermission):
-    """Managers have all permissions on CRUD for all objects."""
-    pass
-
-
-
+    def has_object_permission(self, request, view, obj):
+        if request.method == 'GET':
+            return True
+        else:
+            return bool(obj.support_contact == request.user or obj.client.sales_contact == request.user)

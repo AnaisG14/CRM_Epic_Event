@@ -1,19 +1,20 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.filters import SearchFilter, OrderingFilter
 from .models import Client, Contract, Event
 from .serializers import ClientListSerializer, ClientDetailSerializer,\
     ContractDetailSerializer, ContractListSerializer,\
     EventListSerializer, EventDetailSerializer
-from .permissions import IsAuthorizedToAccessClient
+from .permissions import IsAuthorizedToAccessClientOrContract, IsAuthorizedSailorOrAssignedSupporterToManageEvents
 
 
 class ClientAPIViewSet(ModelViewSet):
 
     serializer_class = ClientListSerializer
     detail_serializer_class = ClientDetailSerializer
-    permission_classes = [IsAuthenticated, IsAuthorizedToAccessClient]
-
-    # self.request.object.contract.event.support_contact.pk
+    permission_classes = [IsAuthenticated, IsAuthorizedToAccessClientOrContract]
+    filter_backends = [SearchFilter]
+    search_fields = ['last_name', 'sales_contact__username']
 
     def get_queryset(self):
         clients = Client.objects.all()
@@ -38,13 +39,17 @@ class ContractAPIViewSet(ModelViewSet):
     
     serializer_class = ContractListSerializer
     detail_serializer_class = ContractDetailSerializer
-    permission_classes = [IsAuthenticated]
-    
+    permission_classes = [IsAuthenticated, IsAuthorizedToAccessClientOrContract]
+    filter_backends = [SearchFilter, OrderingFilter]
+    search_fields = ['client__last_name', 'sales_contact__username', 'status']
+    ordering_fields = ['payment_due']
+
     def get_queryset(self):
         contracts = Contract.objects.all()
-        client_id = self.request.GET.get('client_id')
-        if client_id is not None:
-            contracts = contracts.filter(client=client_id)
+        if self.request.user.role == "SUPPORT":
+            events = Event.objects.filter(support_contact=self.request.user)
+            contracts_supporter = [event.contract.pk for event in events]
+            return Contract.objects.filter(id__in=contracts_supporter)
         return contracts
 
     def get_serializer_class(self):
@@ -57,10 +62,16 @@ class ContractAPIViewSet(ModelViewSet):
 class EventAPIViewSet(ModelViewSet):
     serializer_class = EventListSerializer
     detail_serializer_class = EventDetailSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAuthorizedSailorOrAssignedSupporterToManageEvents]
+    filter_backends = [SearchFilter, OrderingFilter]
+    search_fields = ['client__last_name', 'support_contact__username']
+    ordering_fields = ['event_date']
 
     def get_queryset(self):
-        return Event.objects.all()
+        events = Event.objects.all()
+        if self.request.user.role == 'SUPPORT':
+            return Event.objects.filter(support_contact=self.request.user.id)
+        return events
 
     def get_serializer_class(self):
         if self.action == 'retrieve':

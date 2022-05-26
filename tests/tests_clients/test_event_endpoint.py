@@ -12,9 +12,9 @@ class TestEventEndpoint:
     @classmethod
     def setup(cls):
         cls.sailor = User.objects.create_user(username='Sailor1',
-                                              role='Sailor team')
+                                              role='SAILOR')
         cls.supporter = User.objects.create_user(username='Supporter1',
-                                                 role='Support team')
+                                                 role='SUPPORT')
         cls.client = Client.objects.create(first_name='John',
                                            last_name='Doe',
                                            email='johndoe@test.com',
@@ -55,9 +55,14 @@ class TestEventEndpoint:
             'results': [
                 {
                     'contract': self.event.contract.pk,
+                    'date_created': self.format_datetime(self.event.date_created),
+                    'date_updated': self.format_datetime(self.event.date_updated),
                     'client': self.client.pk,
                     'support_contact': self.supporter.pk,
+                    'event_status': self.event.event_status,
+                    'attendees': self.event.attendees,
                     'event_date': self.format_datetime(self.event.event_date),
+                    'notes': self.event.notes
                 }]
         }
         assert response.json() == expected

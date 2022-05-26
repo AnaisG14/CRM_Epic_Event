@@ -8,9 +8,14 @@ class EventListSerializer(ModelSerializer):
         model = Event
         fields = [
             'contract',
+            'date_created',
+            'date_updated',
             'client',
             'support_contact',
-            'event_date'
+            'event_status',
+            'attendees',
+            'event_date',
+            'notes',
         ]
 
 
@@ -39,6 +44,11 @@ class ContractListSerializer(ModelSerializer):
             'pk',
             'sales_contact',
             'client',
+            'date_created',
+            'date_updated',
+            'status',
+            'amount',
+            'payment_due',
             'event'
         ]
 

@@ -12,9 +12,9 @@ class TestContractEndpoint:
     @classmethod
     def setup(cls):
         cls.sailor = User.objects.create_user(username='Sailor1',
-                                              role='Sailor team')
+                                              role='SAILOR')
         cls.supporter = User.objects.create_user(username='Supporter1',
-                                                 role='Support team')
+                                                 role='SUPPORT')
         cls.client = Client.objects.create(first_name='John',
                                            last_name='Doe',
                                            email='johndoe@test.com',
@@ -41,7 +41,7 @@ class TestContractEndpoint:
         return value.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
 
     @pytest.mark.django_db
-    def test_display_list_of_contract(self):
+    def test_display_list_of_contract_with_sailor_authorization(self):
         client_test = test.Client()
         client_test.force_login(self.sailor)
         url = reverse_lazy('contract-list')
@@ -57,13 +57,18 @@ class TestContractEndpoint:
                     'pk': self.contract.id,
                     'sales_contact': self.contract.sales_contact.pk,
                     'client': self.client.pk,
+                    'date_created': self.format_datetime(self.contract.date_created),
+                    'date_updated': self.format_datetime(self.contract.date_updated),
+                    'status': self.contract.status,
+                    'amount': '100.00',
+                    'payment_due': self.format_datetime(self.contract.payment_due),
                     'event': self.event.pk,
                 }]
         }
         assert response.json() == expected
 
     @pytest.mark.django_db
-    def test_display_detail_of_contract(self):
+    def test_display_detail_of_contract_with_sailor_authorization(self):
         client_test = test.Client()
         client_test.force_login(self.sailor)
         url_detail = reverse('contract-detail', kwargs={'pk': self.contract.pk})
@@ -82,6 +87,7 @@ class TestContractEndpoint:
             'event': self.contract.event.pk
         }
         assert response.json() == expected
+
 
 #     def test_create(self):
 #         # Nous vérifions qu’aucune catégorie n'existe avant de tenter d’en créer une

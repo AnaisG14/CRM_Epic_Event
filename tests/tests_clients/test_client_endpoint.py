@@ -112,12 +112,22 @@ class TestClientEndpoint:
             'pk': self.contract1.pk,
             'sales_contact': self.sailor.pk,
             'client': self.client.pk,
+            'date_created': self.format_datetime(self.contract1.date_created),
+            'date_updated': self.format_datetime(self.contract1.date_updated),
+            'status': self.contract1.status,
+            'amount': '100.00',
+            'payment_due': self.format_datetime(self.contract1.payment_due),
             'event': self.event1.pk
         }
         contract2 = {
             'pk': self.contract2.pk,
             'sales_contact': self.sailor.pk,
             'client': self.client.pk,
+            'date_created': self.format_datetime(self.contract2.date_created),
+            'date_updated': self.format_datetime(self.contract2.date_updated),
+            'status': self.contract2.status,
+            'amount': '100.00',
+            'payment_due': self.format_datetime(self.contract2.payment_due),
             'event': self.event2.pk
         }
         expected = {
@@ -163,13 +173,88 @@ class TestClientEndpoint:
         }
         assert response.json() == expected
 
-#     def test_create(self):
-#         # Nous vérifions qu’aucune catégorie n'existe avant de tenter d’en créer une
-#         self.assertFalse(Category.objects.exists())
-#         response = self.client.post(self.url, data={'name': 'Nouvelle catégorie'})
-#         # Vérifions que le status code est bien en erreur et nous empêche de créer une catégorie
-#         self.assertEqual(response.status_code, 405)
-#         # Enfin, vérifions qu'aucune nouvelle catégorie n’a été créée malgré le status code 405
-#         self.assertFalse(Category.objects.exists())
-#
+    @pytest.mark.django_db
+    def test_sailor_create_client(self):
+        """ Only sailor can create client."""
+        clients = Client.objects.all()
+        first_name_list = [client.first_name for client in clients]
+        new_client = {
+            'first_name': 'new',
+            'last_name': 'new_client',
+            'email': 'new_client@test.com',
+            'phone': '036489',
+            'mobile': '03157',
+            'company_name': 'New Client SA',
+            'sales_contact': self.sailor.pk
+        }
 
+        client_test = test.Client()
+        client_test.force_login(self.sailor)
+        url = reverse_lazy('client-list')
+        response = client_test.post(url, data=new_client)
+        assert response.status_code == 201
+        new_client_created = Client.objects.get(first_name='new')
+        assert new_client_created.first_name == 'new'
+        assert new_client_created.first_name not in first_name_list
+
+    @pytest.mark.django_db
+    def test_supporter_cannot_create_client(self):
+        """ Only sailor can create client."""
+        clients = Client.objects.all()
+        first_name_list = [client.id for client in clients]
+        assert 'new' not in first_name_list
+        new_client = {
+            'first_name': 'new',
+            'last_name': 'new_client',
+            'email': 'new_client@test.com',
+            'phone': '036489',
+            'mobile': '03157',
+            'company_name': 'New Client SA',
+            'sales_contact': self.sailor.pk
+        }
+
+        client_test = test.Client()
+        client_test.force_login(self.supporter1)
+        url = reverse_lazy('client-list')
+        response = client_test.post(url, data=new_client)
+        assert response.status_code == 403
+        assert 'new' not in first_name_list
+
+    @pytest.mark.django_db
+    def test_sailor_can_update_only_their_client(self):
+
+        # try to update a client to another sailor
+        sailor2 = User.objects.create_user(username='sailor2',
+                                           role='SAILOR')
+        url_detail = reverse('client-detail', kwargs={'pk': self.client.pk})
+        client_test = test.Client()
+        client_test.force_login(sailor2)
+        response = client_test.put(url_detail, params={'first_name': 'test',
+                                                       'last_name': 'test',
+                                                       'email': 'email@test.fr',
+                                                       'mobile': '06354',
+                                                       'company_name': 'test',
+                                                       'sales_contact': sailor2.pk})
+        assert response.status_code == 403
+        client_first_name = Client.objects.get(id=self.client.pk)
+        assert client_first_name.first_name == 'John'
+
+    @pytest.mark.django_db
+    def test_sailor_can_update_their_client(self):
+
+        # update his own client
+        client_test = test.Client()
+        client_test.force_login(self.sailor)
+        url_detail = reverse('client-detail', kwargs={'pk': self.client.pk})
+        response = client_test.put(url_detail, {'first_name': 'test',
+                                                'last_name': 'test',
+                                                'email': 'email@test.fr',
+                                                'phone': '0368',
+                                                'mobile': '06354',
+                                                'company_name': 'test',
+                                                'sales_contact': self.sailor.pk
+                                                }, content_type='application/json')
+        print(response.content)
+        assert response.status_code == 200
+        client_data = Client.objects.get(id=self.client.pk)
+        assert client_data.first_name == 'test'

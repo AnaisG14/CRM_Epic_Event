@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.views.generic import View
 from .forms import LoginForm
@@ -22,8 +22,9 @@ class LoginPage(View):
             )
             if user:
                 login(request, user)
-                # return redirect('home')
-                message = f'Hello {user.username}, you are connected.'
+                if user.role == 'MANAGER':
+                    return redirect('admin/')
+                return redirect('api/client/')
             else:
                 message = 'Connexion failed. Please verify your username and password or contact your administrator.'
         return render(request, self.template_name, context={'form': form, 'message': message})
