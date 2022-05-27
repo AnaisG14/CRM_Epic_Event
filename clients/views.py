@@ -14,7 +14,7 @@ class ClientAPIViewSet(ModelViewSet):
     detail_serializer_class = ClientDetailSerializer
     permission_classes = [IsAuthenticated, IsAuthorizedToAccessClientOrContract]
     filter_backends = [SearchFilter]
-    search_fields = ['last_name', 'sales_contact__username']
+    search_fields = ['last_name', 'sales_contact__username', 'status']
 
     def get_queryset(self):
         clients = Client.objects.all()

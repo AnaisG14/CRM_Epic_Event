@@ -49,7 +49,7 @@ class ContractListSerializer(ModelSerializer):
             'status',
             'amount',
             'payment_due',
-            'event'
+            'event',
         ]
 
 
@@ -83,6 +83,7 @@ class ClientListSerializer(ModelSerializer):
             'mobile',
             'company_name',
             'sales_contact',
+            'status'
         ]
 
 
@@ -102,5 +103,6 @@ class ClientDetailSerializer(ModelSerializer):
                   'date_created',
                   'date_updated',
                   'sales_contact',
+                  'status',
                   'contracts_client',
                   ]

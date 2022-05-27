@@ -85,6 +85,7 @@ class TestClientEndpoint:
                     'mobile': self.client.mobile,
                     'company_name': self.client.company_name,
                     'sales_contact': self.sailor.pk,
+                    'status': False,
                 },
                 {
                     'id': self.client2.id,
@@ -95,6 +96,7 @@ class TestClientEndpoint:
                     'mobile': self.client2.mobile,
                     'company_name': self.client2.company_name,
                     'sales_contact': self.sailor.pk,
+                    'status': False,
                 }
             ]
         }
@@ -141,6 +143,7 @@ class TestClientEndpoint:
             'date_created': self.format_datetime(self.client.date_created),
             'date_updated': self.format_datetime(self.client.date_updated),
             'sales_contact': self.sailor.pk,
+            'status': self.client.status,
             'contracts_client': [contract1, contract2],
         }
         print(response)
@@ -169,6 +172,7 @@ class TestClientEndpoint:
                     'mobile': self.client.mobile,
                     'company_name': self.client.company_name,
                     'sales_contact': self.sailor.pk,
+                    'status': False,
                 }]
         }
         assert response.json() == expected

@@ -12,6 +12,7 @@ class Client(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
     sales_contact = models.ForeignKey(User, on_delete=models.CASCADE, related_name='clients')
+    status = models.BooleanField(verbose_name='is client', default=0)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}({self.company_name}) - contact: {self.sales_contact.username}"
