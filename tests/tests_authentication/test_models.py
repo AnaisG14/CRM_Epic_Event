@@ -29,4 +29,4 @@ class TestModelUser:
 
     @pytest.mark.django_db
     def test_display_user(self):
-        assert str(self.user_test1) == 'user_test1 Sailor team'
+        assert str(self.user_test1) == f'{self.user_test1.id} user_test1 Sailor team'

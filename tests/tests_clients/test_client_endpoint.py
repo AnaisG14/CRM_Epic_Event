@@ -86,6 +86,7 @@ class TestClientEndpoint:
                     'company_name': self.client.company_name,
                     'sales_contact': self.sailor.pk,
                     'status': False,
+                    'contracts_client': [self.contract1.id, self.contract2.id]
                 },
                 {
                     'id': self.client2.id,
@@ -97,6 +98,7 @@ class TestClientEndpoint:
                     'company_name': self.client2.company_name,
                     'sales_contact': self.sailor.pk,
                     'status': False,
+                    'contracts_client': []
                 }
             ]
         }
@@ -144,7 +146,7 @@ class TestClientEndpoint:
             'date_updated': self.format_datetime(self.client.date_updated),
             'sales_contact': self.sailor.pk,
             'status': self.client.status,
-            'contracts_client': [contract1, contract2],
+            'contracts_client': [contract1['pk'], contract2['pk']],
         }
         print(response)
         assert response.json() == expected
@@ -173,6 +175,7 @@ class TestClientEndpoint:
                     'company_name': self.client.company_name,
                     'sales_contact': self.sailor.pk,
                     'status': False,
+                    'contracts_client': [self.contract1.id, self.contract2.id]
                 }]
         }
         assert response.json() == expected

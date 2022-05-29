@@ -3,7 +3,7 @@ from .models import Client, Contract, Event
 
 
 class ClientAdmin(admin.ModelAdmin):
-    list_filter = ('sales_contact', 'date_created')
+    list_filter = ('sales_contact', 'date_created', 'status')
 
 
 class ContractAdmin(admin.ModelAdmin):

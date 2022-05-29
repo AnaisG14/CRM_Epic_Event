@@ -23,7 +23,7 @@ class Contract(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='contracts_client')
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
-    status = models.BooleanField(verbose_name='signed')
+    status = models.BooleanField(verbose_name='signed', default=False)
     amount = models.DecimalField(max_digits=11, decimal_places=2)
     payment_due = models.DateTimeField()
 
@@ -43,7 +43,7 @@ class Event(models.Model):
     contract = models.OneToOneField(Contract, on_delete=models.CASCADE, primary_key=True, related_name='event')
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
-    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='events_client')
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='events_client', default=1)
     support_contact = models.ForeignKey(User, on_delete=models.CASCADE, related_name='events_supporter')
     event_status = models.CharField(max_length=20, choices=ROLE_CHOICES, blank=False)
     attendees = models.IntegerField()

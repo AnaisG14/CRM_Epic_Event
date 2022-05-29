@@ -47,13 +47,6 @@ class TestEventSerializer:
     @pytest.mark.django_db
     def test_invalid_serializer_missing_required_field(self):
         """Test if all required fields are ok"""
-        # missing client
-        data_without_client = copy.deepcopy(self.valid_data)
-        del data_without_client['client']
-        serializer = self.serializer(data=data_without_client)
-        assert not serializer.is_valid()
-        assert serializer.errors['client']
-        assert serializer.error_messages['required'] == 'This field is required.'
 
         # missing support_contact
         data_without_support_contact = copy.deepcopy(self.valid_data)

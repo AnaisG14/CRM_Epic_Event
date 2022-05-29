@@ -1,5 +1,6 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, ValidationError
 from .models import Client, Contract, Event
+from authentication.models import User
 
 
 class EventListSerializer(ModelSerializer):
@@ -17,6 +18,7 @@ class EventListSerializer(ModelSerializer):
             'event_date',
             'notes',
         ]
+        read_only_fields = ['client']
 
 
 class EventDetailSerializer(ModelSerializer):
@@ -34,6 +36,7 @@ class EventDetailSerializer(ModelSerializer):
             'event_date',
             'notes',
         ]
+        read_only_fields = ['client']
 
 
 class ContractListSerializer(ModelSerializer):
@@ -51,6 +54,7 @@ class ContractListSerializer(ModelSerializer):
             'payment_due',
             'event',
         ]
+        read_only_fields = ['event', 'sales_contact']
 
 
 class ContractDetailSerializer(ModelSerializer):
@@ -68,6 +72,7 @@ class ContractDetailSerializer(ModelSerializer):
             'payment_due',
             'event'
         ]
+        read_only_fields = ['event', 'sales_contact']
 
 
 class ClientListSerializer(ModelSerializer):
@@ -83,13 +88,19 @@ class ClientListSerializer(ModelSerializer):
             'mobile',
             'company_name',
             'sales_contact',
-            'status'
+            'status',
+            'contracts_client'
         ]
+        read_only_fields = ['contracts_client', 'sales_contact']
+
+    def validate(self, data):
+        # Check that the client is not already in the database
+        if Client.objects.filter(email=data['email'], last_name=data['last_name']).exists():
+            raise ValidationError('Client already exists.')
+        return data
 
 
 class ClientDetailSerializer(ModelSerializer):
-
-    contracts_client = ContractListSerializer(many=True)
 
     class Meta:
         model = Client
@@ -106,3 +117,4 @@ class ClientDetailSerializer(ModelSerializer):
                   'status',
                   'contracts_client',
                   ]
+        read_only_fields = ['contracts_client']

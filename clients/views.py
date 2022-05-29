@@ -29,10 +29,13 @@ class ClientAPIViewSet(ModelViewSet):
         return clients
 
     def get_serializer_class(self):
-        if self.action == 'retrieve':
+        if self.action == 'retrieve' or self.action == 'update':
             return self.detail_serializer_class
         else:
             return super().get_serializer_class()
+
+    def perform_create(self, serializer):
+        serializer.save(sales_contact=self.request.user)
 
 
 class ContractAPIViewSet(ModelViewSet):
@@ -58,6 +61,9 @@ class ContractAPIViewSet(ModelViewSet):
         else:
             return super().get_serializer_class()
 
+    def perform_create(self, serializer):
+        serializer.save(sales_contact=self.request.user)
+
 
 class EventAPIViewSet(ModelViewSet):
     serializer_class = EventListSerializer
@@ -78,3 +84,12 @@ class EventAPIViewSet(ModelViewSet):
             return self.detail_serializer_class
         else:
             return super().get_serializer_class()
+
+    def create(self, request, *args, **kwargs):
+        request.POST._mutable = True
+        contract_id = request.data['contract']
+        contract = Contract.objects.get(pk=contract_id)
+        client = Client.objects.get(pk=contract.client.id)
+        request.data["client"] = client.pk
+        request.POST._mutable = False
+        return super().create(request, *args, **kwargs)
