@@ -1,3 +1,4 @@
+import datetime
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.filters import SearchFilter, OrderingFilter
@@ -93,3 +94,4 @@ class EventAPIViewSet(ModelViewSet):
         request.data["client"] = client.pk
         request.POST._mutable = False
         return super().create(request, *args, **kwargs)
+

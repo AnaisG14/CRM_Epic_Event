@@ -40,4 +40,5 @@ class IsAuthorizedSailorOrAssignedSupporterToManageEvents(BasePermission):
         if request.method == 'GET':
             return True
         else:
-            return bool(obj.support_contact == request.user or obj.client.sales_contact == request.user)
+            return bool((obj.support_contact == request.user and obj.event_status == 'IN PROGRESS') or obj.client.sales_contact == request.user)
+

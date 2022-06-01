@@ -28,7 +28,7 @@ class Contract(models.Model):
     payment_due = models.DateTimeField()
 
     def __str__(self):
-        return f"Contrat {self.id}: {self.client} for {self.amount}$"
+        return f"Contrat {self.id}: client ({self.client.id}, {self.client.last_name}), sailor ({self.sales_contact.id}, {self.sales_contact.username})"
 
 
 class Event(models.Model):
@@ -43,7 +43,7 @@ class Event(models.Model):
     contract = models.OneToOneField(Contract, on_delete=models.CASCADE, primary_key=True, related_name='event')
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
-    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='events_client', default=1)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='events_client', default=2)
     support_contact = models.ForeignKey(User, on_delete=models.CASCADE, related_name='events_supporter')
     event_status = models.CharField(max_length=20, choices=ROLE_CHOICES, blank=False)
     attendees = models.IntegerField()
@@ -51,5 +51,6 @@ class Event(models.Model):
     notes = models.TextField(blank=True)
 
     def __str__(self):
-        return f"{self.pk}- for {self.contract.client.first_name} {self.contract.client.last_name} " \
+        return f"{self.contract}- for {self.contract.client.first_name} {self.contract.client.last_name} " \
                f"the {self.event_date} - supporter: {self.support_contact.username}"
+
