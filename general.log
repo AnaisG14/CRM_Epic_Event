@@ -9,3 +9,94 @@ Not Found: /client/
 Forbidden: /api/client/
 Not Found: /favicon.ico
 Not Found: /favicon.ico
+Watching for file changes with StatReloader
+Not Found: /favicon.ico
+Forbidden: /api/client/
+Forbidden: /api/client/
+Forbidden: /api/event/12/
+Forbidden: /api/client/
+Forbidden: /api/client/59/
+Forbidden: /api/client/59/
+Forbidden: /api/contract/
+Forbidden: /api/event/
+Forbidden: /api/event/40/
+Not Found: /api/event/40/
+Not Found: /api/event/40/
+Forbidden: /api/event/40/
+Forbidden: /api/event/40/
+Forbidden: /api/contract/40/
+Not Found: /api/contract/40/
+Forbidden: /api/client/
+Forbidden: /api/client/60/
+Forbidden: /api/client/60/
+Forbidden: /api/contract/
+Forbidden: /api/event/
+Forbidden: /api/event/41/
+Not Found: /api/event/41/
+Not Found: /api/event/41/
+Forbidden: /api/event/41/
+Forbidden: /api/event/41/
+Forbidden: /api/contract/41/
+Not Found: /api/contract/41/
+Forbidden: /api/client/
+Forbidden: /api/client/61/
+Forbidden: /api/client/61/
+Forbidden: /api/contract/
+Forbidden: /api/event/
+Forbidden: /api/event/42/
+Not Found: /api/event/42/
+Not Found: /api/event/42/
+Forbidden: /api/event/42/
+Forbidden: /api/event/42/
+Forbidden: /api/contract/42/
+Not Found: /api/contract/42/
+Forbidden: /api/client/
+Forbidden: /api/client/62/
+Forbidden: /api/client/62/
+Forbidden: /api/contract/
+Forbidden: /api/event/
+Forbidden: /api/event/43/
+Not Found: /api/event/43/
+Not Found: /api/event/43/
+Forbidden: /api/event/43/
+Forbidden: /api/event/43/
+Forbidden: /api/contract/43/
+Not Found: /api/contract/43/
+/home/anais/ProjetsOC/Projet12/CRM_Epic_Event/clients/serializers.py changed, reloading.
+Watching for file changes with StatReloader
+Forbidden: /api/client/
+Forbidden: /api/client/
+Forbidden: /api/client/
+Forbidden: /api/event/
+Forbidden (CSRF token from POST incorrect.): /admin/login/
+Forbidden: /api/client/
+Forbidden: /api/client/63/
+Forbidden: /api/client/63/
+Forbidden: /api/contract/
+Forbidden: /api/event/
+Forbidden: /api/event/44/
+Not Found: /api/event/44/
+Not Found: /api/event/44/
+Forbidden: /api/event/44/
+Forbidden: /api/event/44/
+Forbidden: /api/contract/44/
+Not Found: /api/contract/44/
+Forbidden: /api/client/
+Not Found: /favicon.ico
+Forbidden: /api/client/
+Forbidden: /api/event/12/
+Forbidden (CSRF token from POST incorrect.): /admin/login/
+Forbidden: /api/client/
+Forbidden: /api/client/64/
+Forbidden: /api/client/64/
+Forbidden: /api/contract/
+Forbidden: /api/event/
+Forbidden: /api/event/45/
+Not Found: /api/event/45/
+Not Found: /api/event/45/
+Forbidden: /api/event/45/
+Forbidden: /api/event/45/
+Forbidden: /api/contract/45/
+Not Found: /api/contract/45/
+Forbidden: /api/event/
+Forbidden: /api/event/

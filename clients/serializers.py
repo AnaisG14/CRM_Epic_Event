@@ -1,6 +1,5 @@
 from rest_framework.serializers import ModelSerializer, ValidationError
 from .models import Client, Contract, Event
-from authentication.models import User
 
 
 class EventListSerializer(ModelSerializer):
